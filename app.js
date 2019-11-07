@@ -1,18 +1,22 @@
-const sizeof = require('object-sizeof');
+const window_size = 8;
+const buffer_size = 3;
+const test = 'A_ASA_DA_CASA';
 
-let window_size = 8;
-let buffer_size = 3;
-let test = 'A_ASA_DA_CASA';
-
-let tuples = encode(test);
+const tuples = encode(test);
 console.log(tuples);
 console.log(decode(tuples));
 
-console.log(`Tamanho da string: ${sizeof(test)}`);
-console.log(`Tamanho da lista de tuplas(comprimido): ${sizeof(tuples)}`);
+const bitsForWindow = Math.ceil(Math.log2(window_size));
+const bitsForBuffer = Math.ceil(Math.log2(buffer_size));
+const bitsForChar = 8;
+
+const tupleSize = bitsForWindow + bitsForBuffer + bitsForChar;
+const listSize = tupleSize * tuples.length;
+
+console.log(listSize);
 
 function encode(str) {
-    let ret = [];
+    let res = [];
     let i = 0;
 
     while (i < str.length) {
@@ -31,28 +35,27 @@ function encode(str) {
             if (index >= 0) {
                 let literal = '';
 
-                if ((i + size) < str.length) {
+                if ((i + size) < str.length)
                     literal = str[i + size];
-                }
-
+                
                 tuple = { a: window.length - index - 1, b: size, c: literal };
                 break;
             }
         }
 
         i += tuple.b + 1;
-        ret.push(tuple);
+        res.push(tuple);
     }
 
-    return ret;
+    return res;
 }
 
 function decode(list) {
-    let ret = '';
+    let res = '';
     list.forEach(tuple => {
-        let pos = ret.length - tuple.a - 1;
-        ret += ret.substring(pos, pos + tuple.b) + tuple.c;
+        let pos = res.length - tuple.a - 1;
+        res += res.substring(pos, pos + tuple.b) + tuple.c;
     });
 
-    return ret;
+    return res;
 }
