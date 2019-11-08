@@ -1,22 +1,28 @@
 const window_size = 8;
-const buffer_size = 3;
+const buffer_size = 4;
 const test = 'A_ASA_DA_CASA';
 
 const tuples = encode(test);
 console.log(tuples);
 console.log(decode(tuples));
 
-const bitsForWindow = Math.ceil(Math.log2(window_size));
-const bitsForBuffer = Math.ceil(Math.log2(buffer_size));
+const bitsForWindow = (Math.log2(window_size)) + 1;
+const bitsForBuffer = Math.ceil(Math.log2(buffer_size)) + 1;
 const bitsForChar = 8;
+
 
 const tupleSize = bitsForWindow + bitsForBuffer + bitsForChar;
 const listSize = tupleSize * tuples.length;
 
-console.log(listSize);
+console.log('Bits para janela:\t' + bitsForWindow);
+console.log('Bits para buffer:\t' + bitsForBuffer);
+console.log('Bits para caractere:\t' + bitsForChar);
+console.log('Tamanho da tupla:\t' + tupleSize);
+console.log('Qtd tuplas geradas:\t' + tuples.length);
+console.log('Tamanho do arquivo:\t' + listSize);
 
 function encode(str) {
-    let res = [];
+    const res = [];
     let i = 0;
 
     while (i < str.length) {
@@ -37,7 +43,7 @@ function encode(str) {
 
                 if ((i + size) < str.length)
                     literal = str[i + size];
-                
+
                 tuple = { a: window.length - index - 1, b: size, c: literal };
                 break;
             }
