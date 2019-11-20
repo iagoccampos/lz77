@@ -6,10 +6,9 @@ const tuples = encode(test);
 console.log(tuples);
 console.log(decode(tuples));
 
-const bitsForWindow = (Math.log2(window_size)) + 1;
+const bitsForWindow = Math.ceil(Math.log2(window_size)) + 1;
 const bitsForBuffer = Math.ceil(Math.log2(buffer_size)) + 1;
 const bitsForChar = 8;
-
 
 const tupleSize = bitsForWindow + bitsForBuffer + bitsForChar;
 const listSize = tupleSize * tuples.length;
@@ -20,6 +19,7 @@ console.log('Bits para caractere:\t' + bitsForChar);
 console.log('Tamanho da tupla:\t' + tupleSize);
 console.log('Qtd tuplas geradas:\t' + tuples.length);
 console.log('Tamanho do arquivo:\t' + listSize);
+console.log('Tamanho do arquivo txt:\t' + test.length * 8);
 
 function encode(str) {
     const res = [];
